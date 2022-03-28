@@ -173,6 +173,14 @@ NSString *const errorMethod = @"error";
   [self setCaptureSessionPreset:_resolutionPreset];
   [self updateOrientation];
 
+  NSError* configurationError = nil;
+  if([_captureDevice lockForConfiguration:&configurationError]) {
+    _captureDevice.activeVideoMinFrameDuration = CMTimeMake(1, 10);
+    [_captureDevice unlockForConfiguration];
+  } else {
+    NSLog(@"Could not lock device for config error: %@", configurationError);
+  }
+
   return self;
 }
 
